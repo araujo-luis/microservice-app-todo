@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,17 +30,17 @@ public class UserController {
 		return userService.getUsers();
 	}
 	@GetMapping("/{userId}")
-	public Users getUser(@PathVariable String userId) {
+	public ResponseEntity<Users> getUser(@PathVariable String userId) {
 		return userService.getUser(userId);
 	}
 	
 	@PostMapping
-	public Users createUser(@Valid @RequestBody Users user) {
+	public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
 		return userService.createUser(user);
 	}
 	
 	@PutMapping("/{userId}")
-	public Users updateUser(@PathVariable String userId, @Valid @RequestBody Users user) {
+	public ResponseEntity<Users> updateUser(@PathVariable String userId, @Valid @RequestBody Users user) {
 		return userService.updateUser(userId, user);
 	}
 	
