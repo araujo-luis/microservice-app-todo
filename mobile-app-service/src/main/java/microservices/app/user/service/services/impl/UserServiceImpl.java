@@ -1,4 +1,4 @@
-package microservices.mobile.app.mobileappservice.services.impl;
+package microservices.app.user.service.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import microservices.mobile.app.mobileappservice.exceptions.ApiRequestException;
-import microservices.mobile.app.mobileappservice.models.Users;
-import microservices.mobile.app.mobileappservice.services.UserService;
-import microservices.mobile.app.mobileappservice.utils.Utils;
+import microservices.app.user.service.exceptions.ApiRequestException;
+import microservices.app.user.service.models.Users;
+import microservices.app.user.service.services.UserService;
+import microservices.app.user.service.utils.Utils;
 
 @Service
 public class UserServiceImpl implements UserService {

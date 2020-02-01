@@ -1,4 +1,4 @@
-package microservices.mobile.app.mobileappservice.utils;
+package microservices.app.user.service.utils;
 
 import java.util.UUID;
 

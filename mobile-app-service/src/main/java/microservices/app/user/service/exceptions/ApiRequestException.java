@@ -1,4 +1,4 @@
-package microservices.mobile.app.mobileappservice.exceptions;
+package microservices.app.user.service.exceptions;
 
 public class ApiRequestException extends RuntimeException {
 	

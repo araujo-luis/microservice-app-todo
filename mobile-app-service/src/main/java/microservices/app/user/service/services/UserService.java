@@ -1,10 +1,10 @@
-package microservices.mobile.app.mobileappservice.services;
+package microservices.app.user.service.services;
 
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import microservices.mobile.app.mobileappservice.models.Users;
+import microservices.app.user.service.models.Users;
 
 public interface UserService {
 

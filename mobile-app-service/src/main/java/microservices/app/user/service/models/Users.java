@@ -1,4 +1,4 @@
-package microservices.mobile.app.mobileappservice.models;
+package microservices.app.user.service.models;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;

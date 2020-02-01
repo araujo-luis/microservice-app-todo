@@ -1,4 +1,4 @@
-package microservices.mobile.app.mobileappservice.controllers;
+package microservices.app.user.service.controllers;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import microservices.mobile.app.mobileappservice.models.Users;
-import microservices.mobile.app.mobileappservice.services.UserService;
+import microservices.app.user.service.models.Users;
+import microservices.app.user.service.services.UserService;
 
 @RestController
 @RequestMapping("/users")
