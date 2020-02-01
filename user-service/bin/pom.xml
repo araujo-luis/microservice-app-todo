@@ -8,10 +8,10 @@
 		<version>2.2.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>microservices.mobile.app</groupId>
-	<artifactId>mobile-app-service</artifactId>
+	<groupId>microservices.app</groupId>
+	<artifactId>user-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mobile-app-service</name>
+	<name>user-service</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
