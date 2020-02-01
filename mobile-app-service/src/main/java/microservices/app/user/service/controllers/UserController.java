@@ -24,26 +24,27 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@GetMapping
 	public List<Users> getUsers() {
 		return userService.getUsers();
 	}
+
 	@GetMapping("/{userId}")
 	public ResponseEntity<Users> getUser(@PathVariable String userId) {
 		return userService.getUser(userId);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
 		return userService.createUser(user);
 	}
-	
+
 	@PutMapping("/{userId}")
 	public ResponseEntity<Users> updateUser(@PathVariable String userId, @Valid @RequestBody Users user) {
 		return userService.updateUser(userId, user);
 	}
-	
+
 	@DeleteMapping("/{userId}")
 	public String deleteUser(@PathVariable String userId) {
 		return userService.deleteUser(userId);
