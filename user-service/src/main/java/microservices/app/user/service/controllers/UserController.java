@@ -35,22 +35,22 @@ public class UserController {
 	}
 	
 	@GetMapping
-	public List<Users> getUsers() {
+	public List<UserDto> getUsers() {
 		return userService.getUsers();
 	}
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<Users> getUser(@PathVariable String userId) {
+	public UserDto getUser(@PathVariable String userId) {
 		return userService.getUser(userId);
 	}
 
 	@PostMapping
-	public ResponseEntity<Users> createUser(@Valid @RequestBody Users user) {
+	public UserDto createUser(@RequestBody UserDto user) {
 		return userService.createUser(user);
 	}
 
 	@PutMapping("/{userId}")
-	public ResponseEntity<Users> updateUser(@PathVariable String userId, @Valid @RequestBody Users user) {
+	public UserDto updateUser(@PathVariable String userId, @RequestBody UserDto user) {
 		return userService.updateUser(userId, user);
 	}
 
