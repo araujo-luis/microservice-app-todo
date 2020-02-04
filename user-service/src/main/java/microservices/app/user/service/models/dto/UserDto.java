@@ -2,11 +2,18 @@ package microservices.app.user.service.models.dto;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class UserDto implements Serializable {
 
-    private static final Long serialVersionUID = 1L;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5042193847965920639L;
 
-	private String id;
+	private String userId;
 	
 	private String firstName;
 	
@@ -16,26 +23,25 @@ public class UserDto implements Serializable {
 	
 	private String password;
     
-
 	public UserDto() {
 		super();
 	}
 
-	public UserDto(String id, String firstName, String lastName, String email, String password) {
+	public UserDto(String userId, String firstName, String lastName, String email, String password) {
 		super();
-		this.id = id;
+		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getFirstName() {

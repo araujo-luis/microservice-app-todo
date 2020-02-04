@@ -9,7 +9,7 @@ import microservices.app.user.service.models.dto.UserDto;
 
 public interface UserService {
 
-	public List<Users> getUsers();
+	public List<UserDto> getUsers();
 
 	public UserDto getUser(String userId);
 

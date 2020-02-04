@@ -34,7 +34,7 @@ public class Users {
 	@Column(nullable=false, unique=true)
 	private String email;
 	
-	@Size(min=4, max=16)
+	@Size(min=4)
 	@NotNull(message="Password cannot be null")
 	@Column(nullable=false, unique=true)
 	private String password;
