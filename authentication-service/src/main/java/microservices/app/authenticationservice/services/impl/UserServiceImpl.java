@@ -27,14 +27,16 @@ public class UserServiceImpl implements UserService {
 
 		return webClientBuilder.build().get().uri("http://users-service/users/" + userEmail)
 				.retrieve().bodyToMono(UserDto.class);
-		
-
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		UserDto user = webClientBuilder.build().get().uri("http://users-service/users/email/" + username)
+		UserDto user = webClientBuilder.build().get().uri("http://users-service/users/" + username)
 		.retrieve().bodyToMono(UserDto.class).block();
+		if(user == null) throw new UsernameNotFoundException(username);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+		System.out.println(user.getEmail() + user.getPassword());
+
 		return new User(user.getEmail(), user.getPassword(), true, true, true, true, new ArrayList<>());
 		
 		//return new org.springframework.security.core.userdetails.User(user);

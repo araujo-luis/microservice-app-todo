@@ -33,8 +33,8 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	}
 	
 	private AuthenticationFilter getAuthenticationFilter() throws Exception{
-		AuthenticationFilter auth = new AuthenticationFilter();
-		auth.setAuthenticationManager(authenticationManager());
+		AuthenticationFilter auth = new AuthenticationFilter(userService, env, authenticationManager());
+		//auth.setAuthenticationManager(authenticationManager());
 		return auth;
 	}
 
