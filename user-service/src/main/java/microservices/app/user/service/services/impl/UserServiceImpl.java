@@ -39,9 +39,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto getUser(String userId) {
-		UserDto user = users.stream().filter(x -> x.getUserId().equals(userId)).findFirst()
-				.orElseThrow(() -> new ApiRequestException("User Not Found, try to enter a valid Id"));
-		return user;
+		Users user = userRepository.findByUserId(userId);
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		
+		UserDto userDto = modelMapper.map(user, UserDto.class);
+		return userDto;
 
 	}
 
