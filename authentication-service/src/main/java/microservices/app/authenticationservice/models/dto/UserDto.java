@@ -1,14 +1,23 @@
-package microservices.app.authorizationservice.models;
+package microservices.app.authenticationservice.models.dto;
 
-public class User {
+import java.io.Serializable;
+
+public class UserDto implements Serializable {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5042193847965920639L;
+	
 	private String email;
+	
 	private String password;
-
-	public User() {
+    
+	public UserDto() {
 		super();
 	}
 
-	public User(String email, String password) {
+	public UserDto(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -30,4 +39,5 @@ public class User {
 		this.password = password;
 	}
 
+	
 }

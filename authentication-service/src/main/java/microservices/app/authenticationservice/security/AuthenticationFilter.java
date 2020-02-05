@@ -1,4 +1,4 @@
-package microservices.app.authorizationservice.security;
+package microservices.app.authenticationservice.security;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,22 +8,23 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import microservices.app.authenticationservice.models.dto.UserDto;
 
-import microservices.app.authorizationservice.models.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	@Override
-	public org.springframework.security.core.Authentication attemptAuthentication(HttpServletRequest req,
+	public Authentication attemptAuthentication(HttpServletRequest req,
 			HttpServletResponse res) throws AuthenticationException {
 		try {
-			User credentials = new ObjectMapper().readValue(req.getInputStream(), User.class);
+			UserDto credentials = new ObjectMapper().readValue(req.getInputStream(), UserDto.class);
 			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
 					credentials.getEmail(), credentials.getPassword(), new ArrayList<>()));
 
