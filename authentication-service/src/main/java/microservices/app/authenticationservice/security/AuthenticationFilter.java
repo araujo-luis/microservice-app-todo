@@ -12,19 +12,36 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.security.core.userdetails.User;
+
 import microservices.app.authenticationservice.models.dto.UserDto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import microservices.app.authenticationservice.services.UserService;
 
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+	private Environment env;
+	
+	private UserService userService;
+
+	public AuthenticationFilter(UserService userService, Environment env, AuthenticationManager authenticationManager){
+		this.env = env;
+		this.userService = userService;
+		super.setAuthenticationManager(authenticationManager);
+	}
+
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req,
 			HttpServletResponse res) throws AuthenticationException {
+				
 		try {
 			UserDto credentials = new ObjectMapper().readValue(req.getInputStream(), UserDto.class);
+			
+			System.out.println(credentials.getEmail() + credentials.getPassword());
 			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
 					credentials.getEmail(), credentials.getPassword(), new ArrayList<>()));
 
@@ -35,11 +52,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
-			AuthenticationFilter auth) throws IOException, ServletException {
+			Authentication auth) throws IOException, ServletException {
 
-//		String token = JWT.create().withSubject(((User) auth.getPrincipal()).getUsername())
-	//			.withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).sign(HMAC512(SECRET.getBytes()));
-		//res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+		String token = JWT.create().withSubject(((User) auth.getPrincipal()).getUsername())
+				.withExpiresAt(new Date(System.currentTimeMillis() + Long.parseLong(
+					env.getProperty("token.expiration-time")
+				))).sign(HMAC512(SECRET.getBytes()));
+
+		System.out.println("MY TOKEN!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+		System.out.println(token);
 	}
 
 }
