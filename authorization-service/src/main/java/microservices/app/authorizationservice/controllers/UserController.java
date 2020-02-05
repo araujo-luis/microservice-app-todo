@@ -18,7 +18,7 @@ public class UserController {
 	UserService userService;
 	
 	@GetMapping("/user/{userEmail}")
-	public Mono<UserDto> getUser(@PathVariable String userEmail) {
+	public UserDto getUser(@PathVariable String userEmail) {
 		return userService.getUser(userEmail);
 	}
 	

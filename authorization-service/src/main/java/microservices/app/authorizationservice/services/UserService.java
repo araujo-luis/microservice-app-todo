@@ -6,7 +6,7 @@ import microservices.app.authorizationservice.models.dto.UserDto;
 import reactor.core.publisher.Mono;
 
 public interface UserService extends UserDetailsService{
-	public Mono<UserDto> getUser(String userId);
+	public UserDto getUser(String userId);
 
 }
 
