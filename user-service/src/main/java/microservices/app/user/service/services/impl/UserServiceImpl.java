@@ -31,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	ModelMapper modelMapper;
 	
 	@Override
 	public List<UserDto> getUsers() {
@@ -53,7 +56,6 @@ public class UserServiceImpl implements UserService {
 		String userId = utils.generateUserId();
 		userDto.setUserId(userId);
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		
 		Users user = modelMapper.map(userDto, Users.class);
@@ -80,6 +82,15 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new ApiRequestException("User Not Found, try yo enter a valid Id"));
 		users.remove(users.indexOf(userFilter));
 		return userId;
+	}
+
+	@Override
+	public UserDto getUserByEmail(String email) {
+		Users user = userRepository.findByEmail(email);
+		if(user == null) throw new ApiRequestException("Uset not found, try to enter a valid Email");
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		
+		return modelMapper.map(user, UserDto.class);
 	}
 
 }

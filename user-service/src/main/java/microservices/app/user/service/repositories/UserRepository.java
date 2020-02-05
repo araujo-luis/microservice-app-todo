@@ -7,4 +7,6 @@ import microservices.app.user.service.models.dto.UserDto;
 public interface UserRepository extends CrudRepository<Users, Long> {
 
 	public Users findByUserId(String userId);
+
+	public Users findByEmail(String email);
 }

@@ -1,4 +1,4 @@
-package microservices.app.authorizationservice.security;
+package microservices.app.authenticationservice.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import microservices.app.authorizationservice.services.UserService;
+import microservices.app.authenticationservice.services.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +28,7 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/**").permitAll();//.and().addFilter(getAuthenticationFilter());
+		http.authorizeRequests().antMatchers("/**").permitAll().and().addFilter(getAuthenticationFilter());
 		http.headers().frameOptions().disable();
 	}
 	
