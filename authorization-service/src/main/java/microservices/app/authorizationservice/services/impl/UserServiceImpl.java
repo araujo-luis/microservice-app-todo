@@ -12,7 +12,6 @@ import microservices.app.authorizationservice.models.dto.UserDto;
 import microservices.app.authorizationservice.services.UserService;
 import reactor.core.publisher.Mono;
 
-
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
@@ -22,17 +21,16 @@ public class UserServiceImpl implements UserService {
 	BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	public Mono<UserDto> getUser(String userEmail) {
-	
-		Mono<UserDto> response = webClientBuilder.build().get()
-				.uri("http:/users-service/users/" + userEmail)
-				.retrieve().bodyToMono(UserDto.class);
+	public UserDto getUser(final String userEmail) {
+
+		final UserDto response = webClientBuilder.build().get().uri("http://users-service/users/" + userEmail)
+				.retrieve().bodyToMono(UserDto.class).block();
 		return response;
 
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
 
 		return null;
 	}
