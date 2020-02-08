@@ -1,7 +1,5 @@
 package microservices.app.authenticationservice.security;
 
-import javax.servlet.Filter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 import microservices.app.authenticationservice.service.UserService;
+import microservices.app.authenticationservice.util.JwtUtil;
 
 
 @Configuration
@@ -26,6 +25,9 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private JwtUtil jwt;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable();
@@ -33,11 +35,11 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
         .anyRequest().authenticated()
         .and()
         .addFilter(getAuthenticationFilter());
-		//http.headers().frameOptions().disable();
+		http.headers().frameOptions().disable();
 	}
 	
 	private AuthenticationFilter getAuthenticationFilter() throws Exception{
-		AuthenticationFilter auth = new AuthenticationFilter();
+		AuthenticationFilter auth = new AuthenticationFilter(userService, authenticationManager(), jwt);
 		auth.setAuthenticationManager(authenticationManager());
 		return auth;
 	}
@@ -51,7 +53,6 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
-		// TODO Auto-generated method stub
 		return super.authenticationManagerBean();
 	}
 	
