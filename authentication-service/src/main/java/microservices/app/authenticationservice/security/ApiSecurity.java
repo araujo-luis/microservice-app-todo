@@ -1,5 +1,7 @@
 package microservices.app.authenticationservice.security;
 
+import javax.servlet.Filter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,11 +10,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import microservices.app.authenticationservice.service.UserService;
-import microservices.app.authenticationservice.service.impl.AuthenticationServiceImpl;
 
 
 @Configuration
@@ -22,23 +23,30 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/authentication").permitAll().anyRequest().authenticated();
-		http.headers().frameOptions().disable();
+		http.authorizeRequests().antMatchers("/authentication").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .addFilter(getAuthenticationFilter());
+		//http.headers().frameOptions().disable();
 	}
 	
+	private AuthenticationFilter getAuthenticationFilter() throws Exception{
+		AuthenticationFilter auth = new AuthenticationFilter();
+		auth.setAuthenticationManager(authenticationManager());
+		return auth;
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService);
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 	}
 	
-	
-	@Bean
-	public AuthenticationServiceImpl athentication() throws Exception {
-		return new AuthenticationServiceImpl();
-	}
 	
 	@Override
 	@Bean
@@ -46,9 +54,7 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 		// TODO Auto-generated method stub
 		return super.authenticationManagerBean();
 	}
-	@Bean
-	public PasswordEncoder pe() {
-		return NoOpPasswordEncoder.getInstance();
-	}
+	
+	
 
 }
