@@ -8,11 +8,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import microservices.app.authenticationservice.service.UserService;
-import microservices.app.authenticationservice.service.impl.AuthenticationServiceImpl;
+import microservices.app.authenticationservice.util.JwtUtil;
 
 
 @Configuration
@@ -22,33 +22,40 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JwtUtil jwt;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/authentication").permitAll().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers("/authentication").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .addFilter(getAuthenticationFilter());
 		http.headers().frameOptions().disable();
 	}
 	
+	private AuthenticationFilter getAuthenticationFilter() throws Exception{
+		AuthenticationFilter auth = new AuthenticationFilter(userService, authenticationManager(), jwt);
+		auth.setAuthenticationManager(authenticationManager());
+		return auth;
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService);
+		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 	}
 	
-	
-	@Bean
-	public AuthenticationServiceImpl athentication() throws Exception {
-		return new AuthenticationServiceImpl();
-	}
 	
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
-		// TODO Auto-generated method stub
 		return super.authenticationManagerBean();
 	}
-	@Bean
-	public PasswordEncoder pe() {
-		return NoOpPasswordEncoder.getInstance();
-	}
+	
+	
 
 }
