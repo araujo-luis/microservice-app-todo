@@ -1,10 +1,10 @@
 package microservices.app.user.service.repositories;
 
-import org.springframework.data.repository.CrudRepository;
-import microservices.app.user.service.models.Users;
-import microservices.app.user.service.models.dto.UserDto;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends CrudRepository<Users, Long> {
+import microservices.app.user.service.models.Users;
+
+public interface UserRepository extends JpaRepository<Users, Long> {
 
 	public Users findByUserId(String userId);
 

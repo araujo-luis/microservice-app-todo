@@ -21,14 +21,12 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
 
-		http.authorizeRequests()
-			.antMatchers(env.getProperty("micro.h2console.url")).permitAll()
-			.antMatchers(HttpMethod.POST, env.getProperty("micro.authentication-service.login.url")).permitAll()
-			.antMatchers(HttpMethod.POST, env.getProperty("micro.users-service.signup.url")).permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.addFilter(new AuthenticationFilter(authenticationManager(), env));
-		
+		http.authorizeRequests().antMatchers(env.getProperty("micro.h2console.url")).permitAll()
+				.antMatchers(HttpMethod.POST, env.getProperty("micro.authentication-service.login.url")).permitAll()
+				.antMatchers(HttpMethod.GET, env.getProperty("micro.users-service.signup.url") + "/email/**")
+				.permitAll().antMatchers(HttpMethod.POST, env.getProperty("micro.users-service.signup.url")).permitAll()
+				.anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager(), env));
+
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 }

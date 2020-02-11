@@ -13,7 +13,7 @@ public class UserDto implements Serializable {
 	 */
 	private static final long serialVersionUID = -5042193847965920639L;
 	
-	private String id;
+	private Long id;
 
 	private String userId;
 	
@@ -22,28 +22,25 @@ public class UserDto implements Serializable {
 	private String lastName;
 	
 	private String email;
-	
-	private String password;
     
 	public UserDto() {
 		super();
 	}
 
-	public UserDto(String id, String userId, String firstName, String lastName, String email, String password) {
+	public UserDto(Long id, String userId, String firstName, String lastName, String email) {
 		super();
 		this.id = id;
 		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = password;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -78,14 +75,5 @@ public class UserDto implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	
 }

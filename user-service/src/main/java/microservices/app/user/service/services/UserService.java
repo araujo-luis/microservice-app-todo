@@ -2,7 +2,9 @@ package microservices.app.user.service.services;
 
 import java.util.List;
 
+import microservices.app.user.service.models.Users;
 import microservices.app.user.service.models.dto.UserDto;
+import microservices.app.user.service.models.dto.UserLoginDto;
 
 public interface UserService {
 
@@ -10,11 +12,11 @@ public interface UserService {
 
 	public UserDto getUser(String userId);
 
-	public UserDto getUserByEmail(String email);
+	public UserLoginDto getUserByEmail(String email);
 
-	public UserDto createUser(UserDto user);
+	public UserDto createUser(Users user);
 
-	public UserDto updateUser(String userId, UserDto user);
+	public UserDto updateUser(Long userId, UserDto user);
 
-	public String deleteUser(String userId);
+	public Long deleteUser(Long userId);
 }

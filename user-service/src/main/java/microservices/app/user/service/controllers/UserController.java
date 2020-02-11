@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import microservices.app.user.service.models.Users;
 import microservices.app.user.service.models.dto.UserDto;
+import microservices.app.user.service.models.dto.UserLoginDto;
 import microservices.app.user.service.services.UserService;
 
 @RestController
@@ -37,32 +38,32 @@ public class UserController {
 	}
 	
 	@GetMapping
-	public List<UserDto> getUsers() {
-		return userService.getUsers();
+	public ResponseEntity<List<UserDto>> getUsers() {
+		return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{userId}")
-	public UserDto getUser(@PathVariable String userId) {
-		return userService.getUser(userId);
+	public ResponseEntity<UserDto> getUser(@PathVariable String userId) {
+		return new ResponseEntity<UserDto>(userService.getUser(userId), HttpStatus.OK);
 	}
 
 	@GetMapping("/email/{email}")
-	public UserDto getUserByEmail(@PathVariable String email) {
-		return userService.getUserByEmail(email);
+	public ResponseEntity<UserLoginDto>  getUserByEmail(@PathVariable String email) {
+		return new ResponseEntity<UserLoginDto>(userService.getUserByEmail(email), HttpStatus.OK);
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
+	public ResponseEntity<UserDto> createUser(@RequestBody Users user) {
 		return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{userId}")
-	public UserDto updateUser(@PathVariable String userId, @RequestBody UserDto user) {
-		return userService.updateUser(userId, user);
+	public ResponseEntity<UserDto>  updateUser(@PathVariable Long userId, @RequestBody UserDto user) {
+		return new ResponseEntity<UserDto>(userService.updateUser(userId, user), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{userId}")
-	public String deleteUser(@PathVariable String userId) {
-		return userService.deleteUser(userId);
+	public ResponseEntity<Long>  deleteUser(@PathVariable Long userId) {
+		return new ResponseEntity<Long>(userService.deleteUser(userId), HttpStatus.OK);
 	}
 }
