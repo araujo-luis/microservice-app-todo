@@ -14,7 +14,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class JwtUtil {
 
-	private Environment env;
+	
+	final String SECRET_TOKEN= "asdasd878!!$%&wdf234";
 
 	public String generateToken(final UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
@@ -22,8 +23,6 @@ public class JwtUtil {
 	}
 
 	private String createToken(final Map<String, Object> claims, final String username) {
-		return Jwts.builder().setSubject(username).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-				.signWith(SignatureAlgorithm.HS256, env.getProperty("token.secret")).compact();
+		return Jwts.builder().setSubject(username).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)).signWith(SignatureAlgorithm.HS256, SECRET_TOKEN).compact();
 	}
 }
