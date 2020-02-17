@@ -3,6 +3,7 @@ package microservices.app.authenticationservice.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,34 +11,34 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-
 import microservices.app.authenticationservice.service.UserService;
 import microservices.app.authenticationservice.util.JwtUtil;
 
-
 @Configuration
 @EnableWebSecurity
-public class ApiSecurity extends WebSecurityConfigurerAdapter{
-	
+public class ApiSecurity extends WebSecurityConfigurerAdapter {
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private JwtUtil jwt;
-	
+
+	@Autowired
+	private Environment env;
+
 	@Override
-	protected void configure(HttpSecurity http) throws Exception{
+	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/**").hasIpAddress("172.20.34.133")
-        .and()
-        .addFilter(getAuthenticationFilter());
+		http.authorizeRequests().antMatchers("/**").hasIpAddress(env.getProperty("gateway.ip")).and()
+				.addFilter(getAuthenticationFilter());
 		http.headers().frameOptions().disable();
 	}
-	
-	private AuthenticationFilter getAuthenticationFilter() throws Exception{
+
+	private AuthenticationFilter getAuthenticationFilter() throws Exception {
 		AuthenticationFilter auth = new AuthenticationFilter(userService, authenticationManager(), jwt);
 		auth.setAuthenticationManager(authenticationManager());
 		return auth;
@@ -47,14 +48,11 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter{
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 	}
-	
-	
+
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	
-	
 
 }
