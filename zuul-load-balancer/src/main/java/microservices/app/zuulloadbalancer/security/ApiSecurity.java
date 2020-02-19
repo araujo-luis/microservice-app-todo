@@ -25,6 +25,9 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, env.getProperty("micro.authentication-service.login.url")).permitAll()
 				.antMatchers(HttpMethod.GET, env.getProperty("micro.users-service.signup.url") + "/email/**").permitAll()
 				.antMatchers(HttpMethod.POST, env.getProperty("micro.users-service.signup.url")).permitAll()
+				.antMatchers(env.getProperty("micro.zuul-load-balancer.actuator.url")).permitAll()
+				.antMatchers(env.getProperty("micro.users-service.actuator.url")).permitAll()
+				
 				.antMatchers("/users-service/swagger-ui.html").permitAll()
 				.antMatchers("/authentication-service/swagger-ui.html").permitAll()
 				.anyRequest().authenticated().and().addFilter(new AuthenticationFilter(authenticationManager(), env));
