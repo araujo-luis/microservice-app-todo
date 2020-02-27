@@ -42,7 +42,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		try {
 			UserLogin credentials = new ObjectMapper().readValue(req.getInputStream(), UserLogin.class);
 
-			System.out.println(credentials.getEmail() + credentials.getPassword());
 			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
 					credentials.getEmail(), credentials.getPassword(), new ArrayList<>()));
 
@@ -51,6 +50,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		}
 	}
 
+	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
 	

@@ -50,11 +50,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getUser(String userId) {
 		Users user = userRepository.findByUserId(userId);
-		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		user.setPassword(null);
-		UserDto userDto = modelMapper.map(user, UserDto.class);
-		return userDto;
+		return modelMapper.map(user, UserDto.class);
 
 	}
 
