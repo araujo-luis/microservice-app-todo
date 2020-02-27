@@ -44,12 +44,12 @@ public class UserController {
 
 	@GetMapping("/{userId}")
 	public ResponseEntity<UserDto> getUser(@PathVariable String userId) {
-		return new ResponseEntity<UserDto>(userService.getUser(userId), HttpStatus.OK);
+		return new ResponseEntity<>(userService.getUser(userId), HttpStatus.OK);
 	}
 
 	@GetMapping("/email/{email}")
 	public ResponseEntity<UserLoginDto>  getUserByEmail(@PathVariable String email) {
-		return new ResponseEntity<UserLoginDto>(userService.getUserByEmail(email), HttpStatus.OK);
+		return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -59,11 +59,11 @@ public class UserController {
 
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto>  updateUser(@PathVariable Long userId, @RequestBody UserDto user) {
-		return new ResponseEntity<UserDto>(userService.updateUser(userId, user), HttpStatus.OK);
+		return new ResponseEntity<>(userService.updateUser(userId, user), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<Long>  deleteUser(@PathVariable Long userId) {
-		return new ResponseEntity<Long>(userService.deleteUser(userId), HttpStatus.OK);
+		return new ResponseEntity<>(userService.deleteUser(userId), HttpStatus.OK);
 	}
 }
