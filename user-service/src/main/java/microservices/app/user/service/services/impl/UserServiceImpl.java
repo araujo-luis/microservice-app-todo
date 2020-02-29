@@ -30,10 +30,10 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	BCryptPasswordEncoder passwordEncoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
 	@Override
 	public List<UserDto> getUsers() {
@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
 		List<Users> users = userRepository.findAll();
 		users.forEach(f -> f.setPassword(null));
 
-		
 		return modelMapper.map(users, listType);
 	}
 
