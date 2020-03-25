@@ -23,7 +23,8 @@ public class ApiSecurity extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.POST, env.getProperty("micro.authentication-service.login.url")).permitAll()
-				.antMatchers(HttpMethod.GET, env.getProperty("micro.users-service.signup.url") + "/email/**").permitAll()
+				.antMatchers(HttpMethod.GET, env.getProperty("micro.users-service.signup.url") + "/email/**").permitAll() //Should not be here
+				.antMatchers(HttpMethod.GET, env.getProperty("micro.todo-service.url") + "/todos/user/**").permitAll() //Should not be here
 				.antMatchers(HttpMethod.POST, env.getProperty("micro.users-service.signup.url")).permitAll()
 				.antMatchers(env.getProperty("micro.zuul-load-balancer.actuator.url")).permitAll()
 				.antMatchers(env.getProperty("micro.users-service.actuator.url")).permitAll()
