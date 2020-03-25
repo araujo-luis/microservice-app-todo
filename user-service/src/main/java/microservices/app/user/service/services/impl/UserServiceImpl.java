@@ -13,6 +13,7 @@ import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
 
 import microservices.app.user.service.exceptions.ApiRequestException;
+import microservices.app.user.service.feign.TodoServiceFeign;
 import microservices.app.user.service.models.dto.TodoDto;
 import microservices.app.user.service.models.dto.UserDto;
 import microservices.app.user.service.models.dto.UserLoginDto;
@@ -43,10 +44,12 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private WebClient.Builder webClientBuilder;
+	//private WebClient.Builder webClientBuilder;
+	private TodoServiceFeign todoServiceFeign;
 
 	@Autowired
 	private EnvironmentalVariables env;
+	
 
 	@Override
 	public List<UserDto> getUsers() {
@@ -121,21 +124,12 @@ public class UserServiceImpl implements UserService {
 		if (user.isPresent()) {
 
 			UserTodosDto userTodosDto = new ModelMapper().map(user, UserTodosDto.class);
+			List<TodoDto> todos = todoServiceFeign.getTodos(user.get().getId());
 			userTodosDto.setUserId(user.get().getUserId());
 			userTodosDto.setId(user.get().getId());
 			userTodosDto.setFirstName(user.get().getFirstName());
-			userTodosDto.setLastName(user.get().getLastName());
-			
-			
-			String requestUrl = "http://" + env.getGatewayService() + "/" + env.getTodoService() + "/todos/user/"
-					+ user.get().getId();
-
-			Flux<TodoDto> todos = webClientBuilder.build().get().uri(requestUrl).retrieve()
-					.onStatus(HttpStatus::is4xxClientError, response -> 
-						Mono.error(new ApiRequestException("Todo Service Call error: " + response.statusCode()))
-					).bodyToFlux(TodoDto.class);
-			
-			userTodosDto.setTodos(todos.collectList().block());
+			userTodosDto.setLastName(user.get().getLastName());		
+			userTodosDto.setTodos(todos);
 			return userTodosDto; 
 		}
 		throw new ApiRequestException("User not found, try to enter a valid Id");
