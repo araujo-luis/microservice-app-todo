@@ -4,27 +4,24 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
+
+import feign.FeignException;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.modelmapper.convention.MatchingStrategies;
 
 import microservices.app.user.service.exceptions.ApiRequestException;
 import microservices.app.user.service.feign.TodoServiceFeign;
-import microservices.app.user.service.models.dto.TodoDto;
 import microservices.app.user.service.models.dto.UserDto;
 import microservices.app.user.service.models.dto.UserLoginDto;
 import microservices.app.user.service.models.dto.UserTodosDto;
 import microservices.app.user.service.models.Users;
 import microservices.app.user.service.services.UserService;
 import microservices.app.user.service.repositories.UserRepository;
-import microservices.app.user.service.utils.EnvironmentalVariables;
 import microservices.app.user.service.utils.Utils;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
 
@@ -44,12 +41,8 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	//private WebClient.Builder webClientBuilder;
+	// private WebClient.Builder webClientBuilder;
 	private TodoServiceFeign todoServiceFeign;
-
-	@Autowired
-	private EnvironmentalVariables env;
-	
 
 	@Override
 	public List<UserDto> getUsers() {
@@ -124,13 +117,14 @@ public class UserServiceImpl implements UserService {
 		if (user.isPresent()) {
 
 			UserTodosDto userTodosDto = new ModelMapper().map(user, UserTodosDto.class);
-			List<TodoDto> todos = todoServiceFeign.getTodos(user.get().getId());
 			userTodosDto.setUserId(user.get().getUserId());
 			userTodosDto.setId(user.get().getId());
 			userTodosDto.setFirstName(user.get().getFirstName());
-			userTodosDto.setLastName(user.get().getLastName());		
-			userTodosDto.setTodos(todos);
-			return userTodosDto; 
+			userTodosDto.setLastName(user.get().getLastName());
+
+			userTodosDto.setTodos(todoServiceFeign.getTodos(userId));
+
+			return userTodosDto;
 		}
 		throw new ApiRequestException("User not found, try to enter a valid Id");
 	}
