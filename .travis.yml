@@ -1,0 +1,10 @@
+language: java
+
+jdk: oraclejdk8
+
+script:
+  - ./mvnw authentication-service/pom.xml clean verify
+  - ./mvnw eureka-server-discovery/pom.xml clean verify
+
+before_install:
+  - chmod +x mvnw
