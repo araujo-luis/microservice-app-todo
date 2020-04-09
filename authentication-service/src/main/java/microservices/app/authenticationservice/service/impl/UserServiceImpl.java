@@ -27,8 +27,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-		String requestUrl = "http://" + env.getGatewayService() + "/" 
-				+ env.getUsersService() + "/users/email/" + email;
+		String requestUrl = "http://" + env.getUsersService() + "/users/email/" + email;
 
 		UserLogin user = webClientBuilder.build().get().uri(requestUrl).retrieve()
 				.onStatus(HttpStatus::is4xxClientError, response -> {
