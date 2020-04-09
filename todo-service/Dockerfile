@@ -1,3 +1,3 @@
 FROM openjdk:8-jdk-alpine
-COPY target/config-server-0.0.1-SNAPSHOT.jar config-server-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["java", "-jar", "config-server-0.0.1-SNAPSHOT.jar"] 
+COPY target/todo-service-1.0.jar todo-service-1.0.jar
+ENTRYPOINT ["java", "-jar", "todo-service-1.0.jar"] 
