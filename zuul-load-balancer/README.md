@@ -6,5 +6,5 @@ docker run -d -p {zuul.port}:{zuul.port} -e "spring.cloud.config.uri=http://{con
 
 Example
 ```
-docker run -d -p 8011:8011 -e "spring.cloud.config.uri=http://172.31.38.138:8083" l222p/zuul-gateway 
+docker run -d -p 8011:8011 -e "spring.profiles.active=prod" -e "spring.cloud.config.uri=http://172.31.38.138:8083" l222p/zuul-gateway 
 ```
