@@ -44,7 +44,6 @@ $ java -jar todo-service/target/todo-service-1.0.jar
 
 $ java -jar user-service/target/user-service-0.0.1-SNAPSHOT.jar
 
-
 $ java -jar target/authentication-service-0.0.1-SNAPSHOT.jar
 ```
 
