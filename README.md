@@ -65,7 +65,7 @@ $ java -jar target/authentication-service-0.0.1-SNAPSHOT.jar
 
 ```
 {
-    "email": "luis@laureate.net",
+    "email": "luis@test.test",
     "password": "foo"
 }
 ```
